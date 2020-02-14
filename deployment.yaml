@@ -1,0 +1,167 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoreply
+  labels:
+    app: autoreply
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autoreply
+  template:
+    metadata:
+      labels:
+        app: autoreply
+    spec:
+      containers:
+      - env:
+        - name: SEARCH_KEY
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: search_key2
+        - name: CONSUMER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: consumer_key
+        - name: CONSUMER_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: consumer_secret
+        - name: ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: access_token
+        - name: ACCESS_TOKEN_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: access_token_secret
+        name: autoreply
+        image: yourregistry/you/py-bot:latest
+        imagePullPolicy: Always
+        command: ["python3"]
+        args: ["autoreply.py"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: followback
+  labels:
+    app: followback
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: followback
+  template:
+    metadata:
+      labels:
+        app: followback
+    spec:
+      volumes:
+      - name: followback-tweet-data
+        persistentVolumeClaim:
+          claimName: followback-tweet-data
+      containers:
+      - env:
+        - name: SEARCH_KEY
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: search_key2
+        - name: CONSUMER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: consumer_key
+        - name: CONSUMER_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: consumer_secret
+        - name: ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: access_token
+        - name: ACCESS_TOKEN_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: access_token_secret
+        name: followback
+        image: yourregistry/you/py-bot:latest
+        imagePullPolicy: Always
+        command: ["python3"]
+        args: ["followFollowers_data.py"]
+        volumeMounts:
+          - name: followback-tweet-data
+            mountPath: "/tmp/export"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: favretweet
+  labels:
+    app: favretweet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: favretweet
+  template:
+    metadata:
+      labels:
+        app: favretweet
+    spec:
+      containers:
+      - env:
+        - name: SEARCH_KEY
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: search_key1
+        - name: CONSUMER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: consumer_key
+        - name: CONSUMER_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: consumer_secret
+        - name: ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: access_token
+        - name: ACCESS_TOKEN_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: twitter-api-secret
+              key: access_token_secret
+        name: followback
+        image: yourregistry/you/py-bot:latest
+        imagePullPolicy: Always
+        command: ["python3"]
+        args: ["favretweet.py"]
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: followback-tweet-data
+  labels:
+    app: followback
+spec:
+  storageClassName: pure-file
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
