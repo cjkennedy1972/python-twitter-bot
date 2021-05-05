@@ -2,10 +2,10 @@
 podTemplate(yaml: """
 kind: Pod
 spec:
-  serviceAccountName: jenkins-k8s
+  serviceAccountName: jenkins
   containers:
   - name: kustomize
-    image: yourregistry/you/kustomize:3.4
+    image: trow.kube-public:31000/kustomize:3.4
     command:
     - cat
     tty: true
@@ -31,13 +31,6 @@ spec:
       value: /root/.docker/
     - name: IMAGE_TAG
       value: ${BUILD_NUMBER}
-    volumeMounts:
-      - name: harbor-config
-        mountPath: /root/.docker
-  volumes:
-    - name: harbor-config
-      configMap:
-        name: harbor-config
 """
   ) {
 
@@ -47,13 +40,13 @@ spec:
     def gitBranch = myRepo.GIT_BRANCH
     stage('Build with Kaniko') {
       container('kaniko') {
-        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=yourregistry/you/py-bot:latest --destination=yourregistry/you/py-bot:v$BUILD_NUMBER'
+        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=trow.kube-public:31000/py-bot:latest --destination=trow.kube-public:31000/py-bot:v$BUILD_NUMBER'
       }
     }
     stage('Deploy and Kustomize') {
       container('kustomize') {
         sh "kubectl -n ${JOB_NAME} get pod"
-        sh "kustomize edit set image yourregistry/you/py-bot:v${BUILD_NUMBER}"
+        sh "kustomize edit set image trow.kube-public:31000/py-bot:v${BUILD_NUMBER}"
         sh "kustomize build > builddeploy.yaml"
         sh "kubectl get ns ${JOB_NAME} || kubectl create ns ${JOB_NAME}"
         sh "kubectl -n ${JOB_NAME} apply -f builddeploy.yaml"

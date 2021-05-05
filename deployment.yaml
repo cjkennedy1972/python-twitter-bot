@@ -159,9 +159,9 @@ metadata:
   labels:
     app: followback
 spec:
-  storageClassName: pure-file
+  storageClassName: px-jenkins-sc
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 500Gi
+      storage: 200Gi
