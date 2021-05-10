@@ -42,7 +42,7 @@ spec:
               name: twitter-api-secret
               key: access_token_secret
         name: autoreply
-        image: yourregistry/you/py-bot:latest
+        image: trow.kube-public/py-bot:latest
         imagePullPolicy: Always
         command: ["python3"]
         args: ["autoreply.py"]
@@ -95,7 +95,7 @@ spec:
               name: twitter-api-secret
               key: access_token_secret
         name: followback
-        image: yourregistry/you/py-bot:latest
+        image: trow.kube-public/py-bot:latest
         imagePullPolicy: Always
         command: ["python3"]
         args: ["followFollowers_data.py"]
@@ -147,7 +147,7 @@ spec:
               name: twitter-api-secret
               key: access_token_secret
         name: followback
-        image: yourregistry/you/py-bot:latest
+        image: trow.kube-public/py-bot:latest
         imagePullPolicy: Always
         command: ["python3"]
         args: ["favretweet.py"]
