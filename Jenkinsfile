@@ -40,13 +40,13 @@ spec:
     def gitBranch = myRepo.GIT_BRANCH
     stage('Build with Kaniko') {
       container('kaniko') {
-        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=harbor.sixwords.dev/py-bot:latest --destination=harbor.sixwords.dev/py-bot:v$BUILD_NUMBER'
+        sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=harbor.sixwords.dev/library/py-bot:latest --destination=harbor.sixwords.dev/library/py-bot:v$BUILD_NUMBER'
       }
     }
     stage('Deploy and Kustomize') {
       container('kustomize') {
         sh "kubectl -n ${JOB_NAME} get pod"
-        sh "kustomize edit set image harbor.sixwords.dev/py-bot:v${BUILD_NUMBER}"
+        sh "kustomize edit set image harbor.sixwords.dev/library/py-bot:v${BUILD_NUMBER}"
         sh "kustomize build > builddeploy.yaml"
         sh "kubectl get ns ${JOB_NAME} || kubectl create ns ${JOB_NAME}"
         sh "kubectl -n ${JOB_NAME} apply -f builddeploy.yaml"
