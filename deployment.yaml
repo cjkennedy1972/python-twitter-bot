@@ -42,7 +42,7 @@ spec:
               name: twitter-api-secret
               key: access_token_secret
         name: autoreply
-        image: trow.kube-public/py-bot:latest
+        image: harbor.sixwords.dev/library/py-bot:latest
         imagePullPolicy: Always
         command: ["python3"]
         args: ["autoreply.py"]
@@ -95,7 +95,7 @@ spec:
               name: twitter-api-secret
               key: access_token_secret
         name: followback
-        image: trow.kube-public/py-bot:latest
+        image: harbor.sixwords.dev/library/py-bot:latest
         imagePullPolicy: Always
         command: ["python3"]
         args: ["followFollowers_data.py"]
@@ -147,7 +147,7 @@ spec:
               name: twitter-api-secret
               key: access_token_secret
         name: followback
-        image: trow.kube-public/py-bot:latest
+        image: harbor.sixwords.dev/library/py-bot:latest
         imagePullPolicy: Always
         command: ["python3"]
         args: ["favretweet.py"]
@@ -159,9 +159,9 @@ metadata:
   labels:
     app: followback
 spec:
-  storageClassName: px-jenkins-sc
+  storageClassName: px-sharedv4-sc
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 200Gi
+      storage: 100Gi
