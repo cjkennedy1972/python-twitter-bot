@@ -27,8 +27,6 @@ spec:
     - /busybox/cat
     tty: true
     env:
-    - name: DOCKER_CONFIG
-      value: /root/.docker/
     - name: IMAGE_TAG
       value: ${BUILD_NUMBER}
 """
@@ -39,7 +37,7 @@ spec:
     def gitCommit = myRepo.GIT_COMMIT
     def gitBranch = myRepo.GIT_BRANCH
     stage('Build with Kaniko') {
-      configFileProvider([configFile(fileId: 'twitter-bot', targetLocation: '/root/.docker/config.json', variable: 'docker_config')]) {
+      configFileProvider([configFile(fileId: 'twitter-bot', targetLocation: '/kaniko/.docker/config.json', variable: 'docker_config')]) {
       container('kaniko') {
         sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=harbor.sixwords.dev/library/py-bot:latest --destination=harbor.sixwords.dev/library/py-bot:v$BUILD_NUMBER'
       }
