@@ -27,8 +27,17 @@ spec:
     - /busybox/cat
     tty: true
     env:
+    - name: DOCKER_CONFIG
+      value: /root/.docker/
     - name: IMAGE_TAG
       value: ${BUILD_NUMBER}
+    volumeMounts:
+      - name: harbor-config
+        mountPath: /root/.docker
+  volumes:
+    - name: harbor-config
+      configMap:
+        name: harbor-config
 """
   ) {
 
