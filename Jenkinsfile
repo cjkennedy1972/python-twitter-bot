@@ -39,7 +39,8 @@ spec:
     def gitCommit = myRepo.GIT_COMMIT
     def gitBranch = myRepo.GIT_BRANCH
     stage('Build with Kaniko') {
-      container('kaniko') {
+      container('kaniko') 
+      configFileProvider([configFile(fileId: 'twitter-bot', targetLocation: '/root/.docker/config.json', variable: 'docker_config')]) {
         sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=harbor.sixwords.dev/library/py-bot:latest --destination=harbor.sixwords.dev/library/py-bot:v$BUILD_NUMBER'
       }
     }
