@@ -69,7 +69,7 @@ spec:
         sh "kubectl -n ${JOB_NAME} apply -f deployment.yaml"
         sh "kubectl -n ${JOB_NAME} get pod"
       }
-    }
+    }    
+    */
   }
-   */
 }
