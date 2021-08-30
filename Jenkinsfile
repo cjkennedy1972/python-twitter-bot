@@ -5,7 +5,7 @@ spec:
   serviceAccountName: jenkins
   containers:
   - name: kustomize
-    image: trow.kube-public:31000/kustomize:3.4
+    image: harbor.sixwords.dev/library/jenkins/kustomize:v4.3.0
     command:
     - cat
     tty: true
@@ -50,25 +50,26 @@ spec:
         sh '/kaniko/executor -f `pwd`/Dockerfile -c `pwd` --skip-tls-verify --destination=harbor.sixwords.dev/library/py-bot:latest --destination=harbor.sixwords.dev/library/py-bot:v$BUILD_NUMBER'
       }
     }
-    
-   // stage('Deploy and Kustomize') {
-   //   container('kustomize') {
-   //     sh "kubectl -n ${JOB_NAME} get pod"
-   //     sh "kustomize edit set image harbor.sixwords.dev/library/py-bot:v${BUILD_NUMBER}"
-   //     sh "kustomize build > builddeploy.yaml"
-   //     sh "kubectl get ns ${JOB_NAME} || kubectl create ns ${JOB_NAME}"
-   //     sh "kubectl -n ${JOB_NAME} apply -f builddeploy.yaml"
-   //     sh "kubectl -n ${JOB_NAME} get pod"
-   //   }
-   // }
-    // stage('Deploy with kubectl') {
-    //   container('kubectl') {
-    //     // sh "kubectl -n ${JOB_NAME} get pod"
-    //     // sh "kustomize version"
-    //     sh "kubectl get ns ${JOB_NAME} || kubectl create ns ${JOB_NAME}"
-    //     sh "kubectl -n ${JOB_NAME} apply -f deployment.yaml"
-    //     sh "kubectl -n ${JOB_NAME} get pod"
-    //   }
-    // }
-  }   
+
+//    stage('Deploy and Kustomize') {
+/*       container('kustomize') {
+        sh "kubectl -n ${JOB_NAME} get pod"
+        sh "kustomize edit set image harbor.sixwords.dev/library/py-bot:v${BUILD_NUMBER}"
+        sh "kustomize build > builddeploy.yaml"
+        sh "kubectl get ns ${JOB_NAME} || kubectl create ns ${JOB_NAME}"
+        sh "kubectl -n ${JOB_NAME} apply -f builddeploy.yaml"
+        sh "kubectl -n ${JOB_NAME} get pod"
+      }
+    }
+    stage('Deploy with kubectl') {
+      container('kubectl') {
+   /     // sh "kubectl -n ${JOB_NAME} get pod"
+   /     // sh "kustomize version"
+        sh "kubectl get ns ${JOB_NAME} || kubectl create ns ${JOB_NAME}"
+        sh "kubectl -n ${JOB_NAME} apply -f deployment.yaml"
+        sh "kubectl -n ${JOB_NAME} get pod"
+      }
+    }
+  }
 }
+ */

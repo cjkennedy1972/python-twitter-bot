@@ -1,6 +1,6 @@
 FROM alpine:3.8
-ENV KUSTOMIZE_VER 3.4.0
-ENV KUBECTL_VER 1.19.8
+ENV KUSTOMIZE_VER 4.3.0
+ENV KUBECTL_VER 1.21.2
 
 RUN apk --no-cache add curl gettext
 
