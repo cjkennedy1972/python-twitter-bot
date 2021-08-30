@@ -5,7 +5,7 @@ spec:
   serviceAccountName: jenkins
   containers:
   - name: kustomize
-    image: harbor.sixwords.dev/library/jenkins/kustomize:v4.3.0
+    image: harbor.sixwords.dev/library/jenkins/kustomize:v3.4.0
     command:
     - cat
     tty: true
