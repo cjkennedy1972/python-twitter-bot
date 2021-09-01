@@ -1,11 +1,10 @@
-
 podTemplate(yaml: """
 kind: Pod
 spec:
   serviceAccountName: jenkins
   containers:
   - name: kustomize
-    image: trow.kube-public:31000/kustomize:3.4
+    image: harbor.sixwords.dev/library/jenkins/kustomize:v3.4.0
     command:
     - cat
     tty: true
